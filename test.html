@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Upload Form</title>
+</head>
+<body>
+    <h2>PDF Upload Form</h2>
+
+    <form id="pdfUploadForm">
+        <label for="pdfFile">Choose a PDF file:</label>
+        <input type="file" name="pdfFile" id="pdfFile" accept=".pdf" required>
+        <!-- "accept" attribute restricts file selection to PDF files -->
+
+        <br><br>
+
+        <button type="button" onclick="uploadPDF()">Upload PDF</button>
+    </form>
+
+    <script>
+        const uploadPDF = async () => {
+            // Get the selected file
+            const pdfFileInput = document.getElementById('pdfFile');
+            const pdfFile = pdfFileInput.files[0];
+
+            if (!pdfFile) {
+                alert('Please select a PDF file.');
+                return;
+            }
+
+            // Create FormData object and append the file
+            const formData = new FormData();
+            formData.append('pdfFile', pdfFile);
+
+            try {
+                console.log('s1');
+                const response = await fetch('http://localhost:3000/upload', {
+                    method: 'POST',
+                    body: formData,
+                    contentType : 'application/json'
+                });
+                console.log('s2');
+                const data = await response.text();
+                console.log('s3');
+                console.log('File uploaded successfully:', data);
+
+            } catch (error) {
+                console.error('Error uploading file:', error);
+            }
+        }
+    </script>
+</body>
+</html>
