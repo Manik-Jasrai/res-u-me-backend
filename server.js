@@ -12,6 +12,8 @@ const upload = multer({ storage: storage });
 const cleanData = require('./cleanData');
 const classifyEntity = require('./classifyEntity');
 const getJobRequirements = require('./getJobRequirements');
+const predictJobProfile = require('./predictJobProfile');
+const jobData = require('./jobData');
 
 app.use(cors());
 
@@ -28,15 +30,18 @@ app.post('/upload', upload.single('pdfFile'), async (req, res) => {
         //classified data
         const classifiedData = await classifyEntity(keywords);
         
-        const jobProfiles = [];
-        //fetch from api
-
-        const jobRequirements = getJobRequirements(jobProfiles);
-
-        //fetch all the jobs
-
+        //get all the job profiles based on resume 
+        const jobProfiles = await predictJobProfile(classifiedData);
         
-        res.sendStatus(200);
+        //get all the requirements
+        const jobRequirements = await getJobRequirements(jobProfiles);
+        console.log(jobRequirements);
+        //fetch all the jobs
+        
+        const allJobs = await jobData(jobRequirements);
+        console.log(allJobs);
+
+        res.status(200).json(allJobs);
     } catch (err) {
         console.log(err);
     }

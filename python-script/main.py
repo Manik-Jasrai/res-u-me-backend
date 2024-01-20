@@ -4,7 +4,7 @@ import warnings
 warnings.filterwarnings('ignore')
 
 model, word_vectorizer = pickle.load(open('python-script\knn_model.pkl', 'rb'))
-text=sys.argv[1]
+text=sys.argv[0]
 word_features = word_vectorizer.transform([text])
 predicted_probabilities = model.predict_proba(word_features)
 

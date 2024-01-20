@@ -1,4 +1,5 @@
 const getJobRequirements = (jobProfiles) => {
+    const jobRequirements = [];
     jobProfiles.forEach(profile => {
 
         if (profile.Probability > 0) {
@@ -17,3 +18,5 @@ const getJobRequirements = (jobProfiles) => {
 
     return jobRequirements;
 };
+
+module.exports = getJobRequirements;
